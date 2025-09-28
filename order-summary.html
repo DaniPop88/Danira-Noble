@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Summary | Danira Noble Citadel</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #00559d;
+      --accent: #ffd166;
+      --dark: #202c39;
+      --light: #f7fafc;
+      --shadow: 0 8px 36px 0 rgba(0,85,157,0.09);
+      --radius: 1.3rem;
+      --danger: #b80028;
+      --success: #2b9d65;
+    }
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      line-height: 1.7;
+      transition: background 0.4s;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color .22s;
+    }
+    a:hover { color: var(--accent); }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: .7rem;
+    }
+    .header {
+      width: 100%;
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      backdrop-filter: blur(8px);
+      transition: background .3s;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.15rem 2.1rem;
+      position: relative;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 1.33rem;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: 1.2px;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 0 2px 7px rgba(0,85,157,0.08);
+    }
+    .nav-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px 0 rgba(0,85,157,0.07);
+    }
+    main {
+      max-width: 590px;
+      margin: 0 auto;
+      padding: 2.7rem 1.1rem 3rem 1.1rem;
+      min-height: 80vh;
+    }
+    .summary-section {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.2rem 1.3rem 2.3rem 1.3rem;
+      margin-top: 2.3rem;
+      margin-bottom: 2.3rem;
+    }
+    .summary-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 1.1rem;
+      letter-spacing: 1.1px;
+      text-align: center;
+    }
+    .summary-desc {
+      color: #335979;
+      font-size: 1.08rem;
+      margin-bottom: 1.8rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.9rem;
+      box-shadow: 0 2px 10px 0 rgba(0,85,157,0.05);
+      background: #fbfbfa;
+      border-radius: .7rem;
+      overflow: hidden;
+    }
+    .cart-table thead {
+      background: var(--accent);
+    }
+    .cart-table th, .cart-table td {
+      padding: 0.78rem 0.55rem;
+      font-size: 1.01rem;
+      text-align: left;
+    }
+    .cart-table th {
+      color: var(--primary);
+      font-weight: 900;
+      font-size: 1.04rem;
+      letter-spacing: 0.7px;
+      border-bottom: 2px solid #ffe799;
+    }
+    .cart-table td {
+      border-bottom: 1px solid #f0e9d6;
+      color: #32435a;
+    }
+    .cart-table tfoot td {
+      font-weight: 900;
+      color: var(--primary);
+      background: #f6f7fa;
+      border-bottom: none;
+    }
+    .customer-form {
+      margin: 2.2rem 0 1.7rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.37rem;
+    }
+    .form-group label {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.01rem;
+      margin-bottom: .15rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.73rem 1rem;
+      border-radius: .46rem;
+      border: 1.5px solid #d0d9e6;
+      font-size: 1.02rem;
+      transition: border .2s;
+      outline: none;
+      background: #f9fafc;
+      color: #222;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 68px;
+      max-height: 180px;
+    }
+    .order-actions {
+      display: flex;
+      gap: 1.1rem;
+      justify-content: center;
+      margin-top: 0.7rem;
+      margin-bottom: 0.6rem;
+    }
+    .btn {
+      padding: 0.8rem 2.1rem;
+      font-size: 1.08rem;
+      border-radius: 2.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, color .2s, box-shadow .2s;
+      outline: none;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 2px 8px 0 rgba(0,85,157,0.09);
+      letter-spacing: 0.8px;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary) 87%, var(--accent));
+      color: var(--light);
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .btn-secondary {
+      background: var(--light);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: var(--light);
+    }
+    .order-success {
+      background: #eafcf2;
+      border-left: 6px solid var(--success);
+      padding: 1.5rem 1.2rem;
+      border-radius: .9rem;
+      margin: 2.2rem 0 1.2rem 0;
+      color: var(--dark);
+      font-size: 1.08rem;
+      box-shadow: 0 2px 12px 0 rgba(43,157,101,0.08);
+    }
+    .order-success strong {
+      color: var(--success);
+      font-weight: 900;
+      letter-spacing: 0.7px;
+      font-size: 1.1rem;
+    }
+    .order-warning {
+      background: #fff7f7;
+      border-left: 6px solid var(--danger);
+      padding: 1.17rem 1.1rem;
+      border-radius: .85rem;
+      color: var(--danger);
+      font-size: 1.01rem;
+      margin-bottom: 1.3rem;
+      box-shadow: 0 1px 7px 0 rgba(184,0,40,0.07);
+    }
+    .order-review {
+      background: #f9f7fb;
+      border-left: 6px solid var(--accent);
+      padding: 1.2rem 1.1rem;
+      border-radius: .8rem;
+      color: var(--primary);
+      font-size: 1.04rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 1px 7px 0 rgba(0,85,157,0.06);
+    }
+    .footer {
+      background: var(--dark);
+      color: var(--light);
+      padding: 2.1rem 0 1.1rem;
+      margin-top: 2.7rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -40px;
+      width: 340px;
+      height: 340px;
+      opacity: 0.11;
+      background: url('image/LOGO.png') no-repeat center center/contain;
+      z-index: 0;
+    }
+    .footer-container {
+      max-width: 1190px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.1rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-brand {
+      flex: 1 1 230px;
+      margin-bottom: 2.1rem;
+      z-index: 2;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.13rem;
+      font-weight: 900;
+      gap: .5rem;
+      margin-bottom: 0.39rem;
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+    }
+    .footer-logo img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+    .footer-desc {
+      color: #ffd166;
+      font-size: 1.01rem;
+      margin-bottom: .55rem;
+    }
+    .footer-links-group {
+      flex: 1 1 160px;
+      margin-bottom: 2.1rem;
+      z-index: 2;
+    }
+    .footer-links-title {
+      font-size: 1.03rem;
+      font-weight: 900;
+      margin-bottom: .29rem;
+      letter-spacing: .5px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: .32rem;
+    }
+    .footer-link {
+      color: #eaf1fa;
+      font-size: .99rem;
+      transition: color .2s;
+      opacity: .93;
+    }
+    .footer-link:hover { color: var(--accent); }
+    .footer-bottom {
+      text-align: center;
+      font-size: .97rem;
+      color: #eaf1fa;
+      margin-top: 1.35rem;
+      opacity: .87;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-bottom a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+      transition: color .2s;
+    }
+    .footer-bottom a:hover { color: var(--accent);}
+    @media (max-width: 700px) {
+      main { padding: 1.3rem .3rem 2.1rem .3rem; }
+      .summary-section { padding: 1.33rem .6rem 1.5rem .6rem; }
+      .cart-table th, .cart-table td { padding: 0.53rem 0.3rem; }
+      .footer-container { padding: 0 1.2rem;}
+    }
+    @media (max-width: 500px) {
+      .footer-logo img { width: 20px; height: 20px;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">
+        <img src="image/LOGO.png" alt="Danira Noble Citadel Logo" />
+        Danira Noble Citadel
+      </a>
+    </nav>
+  </header>
+  <main>
+    <section class="summary-section" id="summary">
+      <div class="summary-title"><i class="ri-list-check-2"></i> Order Overview</div>
+      <div class="summary-desc">
+        Please review the details of your order below. To complete your purchase, fill in your information and submit your order. After submission, our team will contact you to confirm your selections, preferred colors, availability, and any other details. Kindly double-check all information for accuracy.
+      </div>
+      <div id="cart-summary"></div>
+      <form class="customer-form" id="checkout-form" autocomplete="on">
+        <div class="form-group">
+          <label for="customerName">Full Name</label>
+          <input type="text" id="customerName" name="customerName" required maxlength="80" placeholder="Your full name" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="customerPhone">Mobile Number</label>
+          <input type="tel" id="customerPhone" name="customerPhone" required maxlength="18" placeholder="09xxxxxxxxx" autocomplete="tel" />
+        </div>
+        <div class="form-group">
+          <label for="customerEmail">Email Address</label>
+          <input type="email" id="customerEmail" name="customerEmail" required maxlength="90" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="customerAddress">Delivery Address</label>
+          <textarea id="customerAddress" name="customerAddress" required maxlength="180" placeholder="Complete delivery address"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="paymentMethod">Preferred Payment Method</label>
+          <select id="paymentMethod" name="paymentMethod" required>
+            <option value="" disabled selected>Select payment option</option>
+            <option value="GCash">GCash</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="orderNotes">Order Notes (Optional)</label>
+          <textarea id="orderNotes" name="orderNotes" maxlength="170" placeholder="Special instructions, preferred colors, etc."></textarea>
+        </div>
+        <div class="order-actions">
+          <button type="submit" class="btn btn-primary" id="submitOrderBtn"><i class="ri-checkbox-circle-line"></i> Submit Order</button>
+          <a href="index.html" class="btn btn-secondary"><i class="ri-arrow-go-back-line"></i> Back to Shop</a>
+        </div>
+      </form>
+      <div id="order-success-message" style="display:none;">
+        <div class="order-success">
+          <strong>Thank you for your order!</strong><br>
+          Your order has been received and is now being processed.<br><br>
+          One of our team members will contact you shortly to confirm product details, colors, and availability. Please respond to their message to verify your order and finalize specifics.<br><br>
+          <span style="color:var(--primary);font-weight:700;">After your confirmation, we will send a secure payment link based on your chosen payment method. Please complete your payment within <strong>24 hours</strong> to keep your order active. Unpaid orders beyond this timeframe will be automatically cancelled.</span>
+        </div>
+        <div class="order-review" id="order-review-details"></div>
+        <div class="order-warning">
+          <i class="ri-error-warning-line"></i> <b>Important:</b> Please monitor your messages and email for our follow-up.<br>
+          Orders are only finalized after you confirm the details and payment is received.<br>
+          <b>Need help?</b> Contact us at <a href="mailto:contact@daniracitadel.store">contact@daniracitadel.store</a> or <a href="tel:+639622770132">+63 962 277 0132</a>.
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="image/LOGO.png" alt="Danira Noble Citadel Logo" />
+          Danira Noble Citadel
+        </div>
+        <div class="footer-desc">
+          Purok 5, Bakal II, Talavera, Nueva Ecija, 3114, Philippines<br>
+          Email: <a href="mailto:contact@daniracitadel.store" style="color:var(--accent);">contact@daniracitadel.store</a><br>
+          Phone: <a href="tel:+639622770132" style="color:var(--accent);">+63 962 277 0132</a><br>
+          VAT Reg. No.: 254-065-722-000
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
+        <div class="footer-links">
+          <a href="index.html#about" class="footer-link">About Us</a>
+          <a href="index.html#products" class="footer-link">Products</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Help</div>
+        <div class="footer-links">
+          <a href="index.html#testimonials" class="footer-link">Testimonials</a>
+          <a href="index.html#faq" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Legal</div>
+        <div class="footer-links">
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Danira Noble Citadel | VAT Reg. No.: 254-065-722-000<br>
+      All content &copy; 2025 Danira Noble Citadel. Proudly Filipino.
+    </div>
+  </footer>
+  <script>
+    // PRODUCTS -- keep in sync with index.html
+    const products = [
+      { id: 1, name: "Rice 5kg", price: 350.00, img: "image/placeholder.png" },
+      { id: 2, name: "Laundry Detergent 1L", price: 89.00, img: "image/placeholder.png" },
+      { id: 3, name: "Instant Noodles 5-Pack", price: 52.50, img: "image/placeholder.png" },
+      { id: 4, name: "Sardines (Can)", price: 24.00, img: "image/placeholder.png" },
+      { id: 5, name: "Bath Soap (Pack of 3)", price: 63.00, img: "image/placeholder.png" },
+      { id: 6, name: "Notebook (100 pages)", price: 25.00, img: "image/placeholder.png" },
+      { id: 7, name: "Cooking Oil 1L", price: 98.00, img: "image/placeholder.png" },
+      { id: 8, name: "Biscuits Assorted Pack", price: 49.00, img: "image/placeholder.png" },
+      { id: 9, name: "Face Mask (10pcs)", price: 38.00, img: "image/placeholder.png" },
+      { id: 10, name: "Shampoo 200ml", price: 45.00, img: "image/placeholder.png" },
+      { id: 11, name: "Ballpen (Box of 12)", price: 68.00, img: "image/placeholder.png" },
+      { id: 12, name: "Dishwashing Liquid 500ml", price: 36.00, img: "image/placeholder.png" },
+      { id: 13, name: "Powdered Juice (10 sachets)", price: 57.00, img: "image/placeholder.png" },
+      { id: 14, name: "T-Shirt (Assorted)", price: 120.00, img: "image/placeholder.png" },
+      { id: 15, name: "Plastic Storage Box", price: 180.00, img: "image/placeholder.png" }
+    ];
+
+    function formatPrice(num) {
+      return '₱' + num.toFixed(2);
+    }
+
+    // Render cart summary from localStorage
+    function renderCartSummary() {
+      const cart = JSON.parse(localStorage.getItem('checkoutCart') || "[]");
+      if (!cart.length) {
+        document.getElementById('cart-summary').innerHTML = `<div style="color:#b80028;text-align:center;font-size:1.17rem;margin:1.3rem 0 2.1rem;">No items in cart. <a href="index.html">Return to shop</a></div>`;
+        document.getElementById('checkout-form').style.display = 'none';
+        return;
+      }
+      let total = 0;
+      let html = `
+      <table class="cart-table" aria-label="Order items summary">
+        <thead>
+          <tr>
+            <th style="width:40%;">Product</th>
+            <th style="width:15%;">Qty</th>
+            <th style="width:20%;">Unit Price</th>
+            <th style="width:25%;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+      cart.forEach(item => {
+        total += item.qty * item.price;
+        html += `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.qty}</td>
+            <td>${formatPrice(item.price)}</td>
+            <td>${formatPrice(item.qty * item.price)}</td>
+          </tr>
+        `;
+      });
+      html += `
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align:right;">Total:</td>
+            <td>${formatPrice(total)}</td>
+          </tr>
+        </tfoot>
+      </table>
+      `;
+      document.getElementById('cart-summary').innerHTML = html;
+    }
+    renderCartSummary();
+
+    // Submission and validation
+    const form = document.getElementById('checkout-form');
+    const successMessage = document.getElementById('order-success-message');
+    const reviewDetails = document.getElementById('order-review-details');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Get form values
+        const name = form.customerName.value.trim();
+        const phone = form.customerPhone.value.trim();
+        const email = form.customerEmail.value.trim();
+        const address = form.customerAddress.value.trim();
+        const payment = form.paymentMethod.value.trim();
+        const notes = form.orderNotes.value.trim();
+        const cart = JSON.parse(localStorage.getItem('checkoutCart') || "[]");
+        if (!cart.length) return;
+        // Hide form and show confirmation
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+        // Build order review details
+        let reviewHtml = `
+        <div style="margin-bottom:.7rem;"><b>Order Details:</b></div>
+        <ul style="list-style:none;padding:0;margin:0 0 1.3rem 0;">
+          <li><b>Name:</b> ${name}</li>
+          <li><b>Mobile:</b> ${phone}</li>
+          <li><b>Email:</b> ${email}</li>
+          <li><b>Address:</b> ${address}</li>
+          <li><b>Payment Method:</b> ${payment}</li>
+          ${notes ? `<li><b>Notes:</b> ${notes}</li>` : ''}
+        </ul>
+        <div><b>Order Items:</b></div>
+        <ul style="list-style:disc;margin:0 0 0 1.4rem;padding:0 0 1.3rem 0;">
+        `;
+        let total = 0;
+        cart.forEach(item => {
+          reviewHtml += `<li>${item.name} &times; ${item.qty} — <span style="color:var(--primary);font-weight:700;">${formatPrice(item.qty * item.price)}</span></li>`;
+          total += item.qty * item.price;
+        });
+        reviewHtml += `</ul>
+          <div style="font-weight:900;color:var(--primary);margin-top:.5rem;">Order Total: ${formatPrice(total)}</div>
+        `;
+        reviewDetails.innerHTML = reviewHtml;
+        // Clear cart after order
+        localStorage.removeItem('checkoutCart');
+      });
+    }
+
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
