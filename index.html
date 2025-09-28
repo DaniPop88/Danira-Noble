@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danira Noble Citadel | General Merchandise Retail</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #00559d;
+      --accent: #ffd166;
+      --dark: #202c39;
+      --light: #f7fafc;
+      --shadow: 0 8px 36px 0 rgba(0,85,157,0.09);
+      --radius: 1.4rem;
+    }
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      line-height: 1.7;
+      transition: background 0.4s;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color .22s;
+    }
+    a:hover { color: var(--accent); }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: .7rem;
+    }
+    button, input {
+      font-family: inherit;
+      outline: none;
+      border: none;
+      background: none;
+    }
+    .header {
+      width: 100%;
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      backdrop-filter: blur(8px);
+      transition: background .3s;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.25rem 2.1rem;
+      position: relative;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      font-family: 'Playfair Display', serif;
+    }
+    .nav-logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px 0 rgba(0,85,157,0.09);
+    }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 2.1rem;
+      list-style: none;
+    }
+    .nav-link {
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.22rem 0;
+      position: relative;
+      letter-spacing: 0.5px;
+      transition: color .2s;
+    }
+    .nav-link.active, .nav-link:hover { color: var(--primary);}
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+    }
+    .nav-toggle {
+      display: none;
+      font-size: 2.2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--primary);
+      margin-left: 1rem;
+      z-index: 200;
+    }
+    .floating-cart-btn {
+      position: fixed;
+      left: 32px;
+      bottom: 32px;
+      z-index: 150;
+      background: var(--primary);
+      color: var(--light);
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1rem;
+      box-shadow: 0 2px 14px 0 rgba(0,85,157,0.13);
+      cursor: pointer;
+      border: none;
+      transition: background .2s, color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .floating-cart-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    @media (max-width: 500px) {
+      .floating-cart-btn { left: 10px; bottom: 10px; width: 44px; height: 44px; font-size: 1.5rem;}
+    }
+    .cart-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,85,157,0.11);
+      z-index: 100;
+      display: none;
+    }
+    .cart-overlay.active { display: block; }
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 360px;
+      max-width: 99vw;
+      height: 100%;
+      background: var(--light);
+      box-shadow: -2px 0 20px 0 rgba(0,85,157,0.08);
+      z-index: 101;
+      padding: 2.1rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      transition: right .28s;
+      overflow-y: auto;
+    }
+    .cart-sidebar.open { right: 0;}
+    .cart-sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.05rem;
+    }
+    .cart-sidebar-title {
+      font-size: 1.17rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+    .cart-sidebar-close {
+      font-size: 1.7rem;
+      color: var(--primary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color .2s;
+    }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.14rem;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      border-bottom: 1px solid #ececec;
+      padding-bottom: 1rem;
+    }
+    .cart-item-img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: .6rem;
+      background: #eaf1fa;
+    }
+    .cart-item-details { flex: 1; }
+    .cart-item-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .12rem;
+    }
+    .cart-item-price {
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: .12rem;
+      font-size: 0.97rem;
+    }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: .18rem;
+    }
+    .cart-item-qty-btn {
+      font-size: 1.08rem;
+      background: var(--light);
+      border-radius: .3rem;
+      padding: 2px 7px;
+      cursor: pointer;
+      color: var(--primary);
+      border: 1px solid var(--accent);
+      transition: background .2s, color .2s;
+    }
+    .cart-item-qty-btn:hover {
+      background: var(--primary);
+      color: var(--light);
+    }
+    .cart-item-remove {
+      color: #c43c2f;
+      font-size: 1.13rem;
+      margin-left: .5rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color .2s;
+    }
+    .cart-sidebar-footer {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .cart-sidebar-footer .checkout-btn {
+      padding: 0.6rem 1.22rem;
+      background: var(--primary);
+      color: var(--light);
+      border-radius: .55rem;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .cart-sidebar-footer .checkout-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    main {
+      max-width: 1145px;
+      margin: 0 auto;
+      padding: 2.2rem 1.2rem 3rem;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.5rem;
+      background: linear-gradient(rgba(0,85,157,.83),rgba(0,0,0,.05)), url('image/placeholder.png') center/cover;
+      border-radius: var(--radius);
+      padding: 2.6rem 2.5rem;
+      margin-bottom: 2.3rem;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+      min-height: 340px;
+    }
+    .hero-content {
+      flex: 1 1 320px;
+      min-width: 260px;
+      z-index: 2;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--light);
+      line-height: 1.13;
+      margin-bottom: 1.09rem;
+      letter-spacing: 1.3px;
+      text-shadow: 0 2px 10px rgba(0,85,157,0.13);
+    }
+    .hero-desc {
+      color: #f7fafc;
+      font-size: 1.13rem;
+      margin-bottom: 1.3rem;
+      max-width: 510px;
+      text-shadow: 0 2px 10px rgba(0,85,157,0.11);
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1.08rem;
+    }
+    .btn-primary, .btn-secondary {
+      padding: 0.9rem 2.2rem;
+      font-size: 1.12rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, color .2s, box-shadow .2s;
+      box-shadow: 0 2px 12px 0 rgba(0,85,157,0.13);
+      outline: none;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: var(--light);
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1.2px;
+    }
+    .btn-primary:hover {
+      background: var(--dark);
+      color: var(--accent);
+    }
+    .btn-secondary {
+      background: var(--light);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: var(--light);
+    }
+    .hero-img-container {
+      min-width: 240px;
+      flex: 1 1 220px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      z-index: 1;
+    }
+    .hero-img {
+      width: 310px;
+      max-width: 100%;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 24px 0 rgba(0,85,157,.13);
+      background: #eaf1fa;
+      object-fit: contain;
+      opacity: 0.94;
+    }
+    .section-title {
+      font-size: 2rem;
+      color: var(--primary);
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      margin-top: .9rem;
+      letter-spacing: 0.8px;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 2.1rem;
+      margin-bottom: 2.5rem;
+    }
+    .product-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.05rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform .18s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card:hover {
+      box-shadow: 0 18px 38px 0 rgba(0,85,157,.13);
+      transform: translateY(-8px) scale(1.035);
+    }
+    .product-img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 1.1rem;
+      background: #eaf1fa;
+      border-radius: .7rem;
+      transition: transform .25s;
+    }
+    .product-card:hover .product-img { transform: scale(1.07) rotate(-2deg);}
+    .product-name {
+      font-weight: 900;
+      font-size: 1.13rem;
+      text-align: center;
+      margin-bottom: .33rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .product-desc {
+      font-size: 1.02rem;
+      color: #27608a;
+      margin-bottom: 0.58rem;
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+    .product-stock {
+      font-size: 0.97rem;
+      margin-bottom: 0.21rem;
+      color: var(--primary);
+    }
+    .product-price {
+      font-weight: 700;
+      font-size: 1.17rem;
+      color: var(--primary);
+      margin-bottom: .81rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .product-add {
+      background: var(--primary);
+      color: var(--light);
+      border-radius: .45rem;
+      padding: 0.65rem 1.25rem;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 1.01rem;
+      border: none;
+      transition: background .2s;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .product-add:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .product-badge {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.1rem;
+      background: var(--accent);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: .92rem;
+      padding: 0.19rem 0.65rem;
+      border-radius: .6rem;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 9px 0 rgba(247,183,49,0.07);
+    }
+    .info-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6rem;
+      margin-bottom: 2.1rem;
+      justify-content: center;
+    }
+    .info-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.37rem 1.1rem;
+      min-width: 230px;
+      flex: 1 1 230px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 400px;
+    }
+    .info-icon {
+      font-size: 2.1rem;
+      color: var(--primary);
+      margin-bottom: 0.7rem;
+    }
+    .info-title {
+      font-size: 1.11rem;
+      font-weight: 900;
+      margin-bottom: .32rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .info-desc {
+      color: #27608a;
+      font-size: 1.01rem;
+    }
+    .policy-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.3rem;
+      margin: 1.7rem 0;
+      justify-content: center;
+    }
+    .policy-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.3rem 1.1rem;
+      min-width: 230px;
+      flex: 1 1 210px;
+      max-width: 360px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+    .policy-title {
+      font-size: 1.13rem;
+      font-weight: 900;
+      margin-bottom: .53rem;
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+    }
+    .policy-body {
+      color: #27608a;
+      font-size: 1.03rem;
+      line-height: 1.7;
+    }
+    .footer {
+      background: var(--dark);
+      color: var(--light);
+      padding: 2.4rem 0 1.1rem;
+      margin-top: 2.6rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -40px;
+      width: 340px;
+      height: 340px;
+      opacity: 0.13;
+      background: url('image/LOGO.png') no-repeat center center/contain;
+      z-index: 0;
+    }
+    .footer-container {
+      max-width: 1190px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.1rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-brand {
+      flex: 1 1 230px;
+      margin-bottom: 2.1rem;
+      z-index: 2;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.21rem;
+      font-weight: 900;
+      gap: .55rem;
+      margin-bottom: 0.47rem;
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+    }
+    .footer-logo img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    .footer-desc {
+      color: #ffd166;
+      font-size: 1.01rem;
+      margin-bottom: .65rem;
+    }
+    .footer-links-group {
+      flex: 1 1 160px;
+      margin-bottom: 2.1rem;
+      z-index: 2;
+    }
+    .footer-links-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      margin-bottom: .35rem;
+      letter-spacing: .5px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: .38rem;
+    }
+    .footer-link {
+      color: #eaf1fa;
+      font-size: .99rem;
+      transition: color .2s;
+      opacity: .93;
+    }
+    .footer-link:hover { color: var(--accent); }
+    .footer-bottom {
+      text-align: center;
+      font-size: .99rem;
+      color: #eaf1fa;
+      margin-top: 1.55rem;
+      opacity: .87;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-bottom a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+      transition: color .2s;
+    }
+    .footer-bottom a:hover { color: var(--accent);}
+    .scroll-top-btn {
+      position: fixed;
+      right: 28px;
+      bottom: 32px;
+      z-index: 151;
+      background: var(--accent);
+      color: var(--primary);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.65rem;
+      box-shadow: 0 2px 12px 0 rgba(0,85,157,0.17);
+      cursor: pointer;
+      border: none;
+      transition: background .22s, color .22s, opacity .22s;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .scroll-top-btn.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @media (max-width: 1100px) {
+      .hero { flex-direction: column; text-align: center;}
+      .hero-content, .hero-img-container { justify-content: center;}
+      .hero-img { margin: 1.7rem auto 0 auto;}
+    }
+    @media (max-width: 900px) {
+      .nav-list { gap: 1.2rem; }
+      .footer-container { flex-direction: column; gap: 2.3rem; align-items: flex-start;}
+    }
+    @media (max-width: 700px) {
+      .nav { padding: 1.1rem .75rem;}
+      .main { padding: 1.3rem .6rem 2.1rem;}
+      .products-grid, .info-sections, .policy-sections { gap: 1rem; }
+      .footer-container { padding: 0 1.2rem;}
+      .nav-list {
+        position: fixed;
+        top: 0;
+        right: -100vw;
+        width: 82vw;
+        height: 100vh;
+        background: var(--light);
+        flex-direction: column;
+        gap: 1.7rem;
+        padding-top: 4.2rem;
+        z-index: 120;
+        transition: right .26s;
+        box-shadow: -2px 0 20px 0 rgba(0,85,157,0.09);
+      }
+      .nav-list.open { right: 0;}
+      .nav-toggle { display: block;}
+      .nav-close { display: none;}
+      .nav-list .nav-close {
+        display: block;
+        position: absolute;
+        top: 1.1rem;
+        right: 1.3rem;
+        background: none;
+        border: none;
+        font-size: 1.66rem;
+        color: var(--primary);
+        cursor: pointer;
+        z-index: 999;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 1.1rem .7rem;}
+      .policy-card { padding: 1.05rem .55rem;}
+      .footer { padding: 1.12rem 0 .95rem;}
+    }
+    @media (max-width: 430px) {
+      .cart-sidebar { width: 99vw; padding: 1.05rem .55rem;}
+      .footer-logo img { width: 24px; height: 24px;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">
+        <img src="image/LOGO.png" alt="Danira Noble Citadel Logo" />
+        Danira Noble Citadel
+      </a>
+      <ul class="nav-list" id="nav-list">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="#products" class="nav-link">Products</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <button class="nav-close" id="nav-close" aria-label="Close menu"><i class="ri-close-line"></i></button>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" id="nav-toggle" aria-label="Open menu"><i class="ri-menu-3-line"></i></button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Floating Cart Button -->
+  <button class="floating-cart-btn" id="cart-btn" aria-label="Open cart">
+    <i class="ri-shopping-bag-3-line"></i>
+    <span id="cart-badge" style="position:absolute;top:8px;right:8px;background:var(--accent);color:var(--primary);font-size:.9rem;font-weight:700;border-radius:50%;padding:2px 8px;min-width:24px;text-align:center;display:none"></span>
+  </button>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top-btn" id="scroll-top-btn" aria-label="Scroll to top">
+    <i class="ri-arrow-up-s-line"></i>
+  </button>
+
+  <!-- Cart Sidebar & Overlay -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar" aria-label="Shopping cart">
+    <div class="cart-sidebar-header">
+      <div class="cart-sidebar-title">My Cart</div>
+      <button class="cart-sidebar-close" id="cart-close-btn" aria-label="Close cart"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be rendered here by JS -->
+    </div>
+    <div class="cart-sidebar-footer">
+      <span><span id="cart-items-count">0</span> items | <span id="cart-total">₱0</span></span>
+      <button class="checkout-btn" id="checkout-btn">Checkout</button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">Danira Noble Citadel – <span style="color:var(--accent)">General Merchandise Retail</span></h1>
+        <div class="hero-desc">
+          Welcome to Danira Noble Citadel, your trusted general merchandise retail destination in Talavera, Nueva Ecija.<br>
+          We are committed to bringing everyday essentials and affordable products closer to your home.<br><br>
+          <span style="color:var(--accent);font-weight:700;">“Sulit na sulit, para sa bawat pamilyang Pilipino.”</span>
+        </div>
+        <div class="hero-btns">
+          <a href="#products" class="btn-primary">Shop Now</a>
+          <a href="#about" class="btn-secondary">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-img-container">
+        <img src="image/placeholder.png" alt="Danira Noble Citadel Banner" class="hero-img" />
+      </div>
+    </section>
+
+    <!-- About Us -->
+    <section class="info-sections" id="about">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-store-2-line"></i></div>
+        <div class="info-title">Our Story</div>
+        <div class="info-desc">
+          Danira Noble Citadel was established with a vision to provide a one-stop store for the community of Talavera and nearby towns.<br>
+          Founded by Ms. Danica Mae Manantan Espiritu, it grew from a humble stall into a full general merchandise shop serving hundreds of families.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-heart-2-line"></i></div>
+        <div class="info-title">Our Mission</div>
+        <div class="info-desc">
+          To make shopping easier and more affordable by offering a wide variety of merchandise under one roof.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-team-line"></i></div>
+        <div class="info-title">Our Values</div>
+        <div class="info-desc">
+          Customer Care – “Mahal namin ang aming suki.”<br>
+          Affordability – Every product is budget-friendly.<br>
+          Community Commitment – Supporting local suppliers and neighbors with pride.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-eye-line"></i></div>
+        <div class="info-title">Our Vision</div>
+        <div class="info-desc">
+          To be recognized as a trusted retail name in Central Luzon, providing convenience and value to every Filipino household.
+        </div>
+      </div>
+    </section>
+
+    <!-- Products & Services -->
+    <section id="products">
+      <h2 class="section-title">Shop Our Essentials</h2>
+      <div class="products-grid" id="products-grid">
+        <div class="product-card" data-id="1">
+          <span class="product-badge">Qty: 10</span>
+          <img src="image/placeholder.png" alt="Rice 5kg" class="product-img" />
+          <div class="product-name">Rice 5kg</div>
+          <div class="product-desc">Premium local rice for everyday meals.</div>
+          <div class="product-price">₱350.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="2">
+          <span class="product-badge">Qty: 8</span>
+          <img src="image/placeholder.png" alt="Laundry Detergent 1L" class="product-img" />
+          <div class="product-name">Laundry Detergent 1L</div>
+          <div class="product-desc">Cleans tough stains, fresh scent.</div>
+          <div class="product-price">₱89.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="3">
+          <span class="product-badge">Qty: 15</span>
+          <img src="image/placeholder.png" alt="Instant Noodles 5-Pack" class="product-img" />
+          <div class="product-name">Instant Noodles 5-Pack</div>
+          <div class="product-desc">Quick, tasty, and budget-friendly snack.</div>
+          <div class="product-price">₱52.50</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="4">
+          <span class="product-badge">Qty: 7</span>
+          <img src="image/placeholder.png" alt="Sardines (Can)" class="product-img" />
+          <div class="product-name">Sardines (Can)</div>
+          <div class="product-desc">Classic Filipino breakfast staple.</div>
+          <div class="product-price">₱24.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="5">
+          <span class="product-badge">Qty: 12</span>
+          <img src="image/placeholder.png" alt="Bath Soap (Pack of 3)" class="product-img" />
+          <div class="product-name">Bath Soap (Pack of 3)</div>
+          <div class="product-desc">Gentle, refreshing, family favorite.</div>
+          <div class="product-price">₱63.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="6">
+          <span class="product-badge">Qty: 5</span>
+          <img src="image/placeholder.png" alt="Notebook (100 pages)" class="product-img" />
+          <div class="product-name">Notebook (100 pages)</div>
+          <div class="product-desc">For school or office use.</div>
+          <div class="product-price">₱25.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="7">
+          <span class="product-badge">Qty: 6</span>
+          <img src="image/placeholder.png" alt="Cooking Oil 1L" class="product-img" />
+          <div class="product-name">Cooking Oil 1L</div>
+          <div class="product-desc">Quality oil for everyday cooking.</div>
+          <div class="product-price">₱98.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="8">
+          <span class="product-badge">Qty: 9</span>
+          <img src="image/placeholder.png" alt="Biscuits Assorted Pack" class="product-img" />
+          <div class="product-name">Biscuits Assorted Pack</div>
+          <div class="product-desc">Snacks for merienda or baon.</div>
+          <div class="product-price">₱49.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="9">
+          <span class="product-badge">Qty: 10</span>
+          <img src="image/placeholder.png" alt="Face Mask (10pcs)" class="product-img" />
+          <div class="product-name">Face Mask (10pcs)</div>
+          <div class="product-desc">Reusable, comfortable, and safe.</div>
+          <div class="product-price">₱38.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="10">
+          <span class="product-badge">Qty: 8</span>
+          <img src="image/placeholder.png" alt="Shampoo 200ml" class="product-img" />
+          <div class="product-name">Shampoo 200ml</div>
+          <div class="product-desc">Cleanses hair, leaves it soft and shiny.</div>
+          <div class="product-price">₱45.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="11">
+          <span class="product-badge">Qty: 14</span>
+          <img src="image/placeholder.png" alt="Ballpen (Box of 12)" class="product-img" />
+          <div class="product-name">Ballpen (Box of 12)</div>
+          <div class="product-desc">Smooth writing for office and school.</div>
+          <div class="product-price">₱68.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="12">
+          <span class="product-badge">Qty: 7</span>
+          <img src="image/placeholder.png" alt="Dishwashing Liquid 500ml" class="product-img" />
+          <div class="product-name">Dishwashing Liquid 500ml</div>
+          <div class="product-desc">Cuts grease, gentle on hands.</div>
+          <div class="product-price">₱36.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="13">
+          <span class="product-badge">Qty: 11</span>
+          <img src="image/placeholder.png" alt="Powdered Juice (10 sachets)" class="product-img" />
+          <div class="product-name">Powdered Juice (10 sachets)</div>
+          <div class="product-desc">Delicious fruit flavor for the family.</div>
+          <div class="product-price">₱57.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="14">
+          <span class="product-badge">Qty: 13</span>
+          <img src="image/placeholder.png" alt="T-Shirt (Assorted)" class="product-img" />
+          <div class="product-name">T-Shirt (Assorted)</div>
+          <div class="product-desc">Comfortable daily wear, various colors.</div>
+          <div class="product-price">₱120.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="15">
+          <span class="product-badge">Qty: 6</span>
+          <img src="image/placeholder.png" alt="Plastic Storage Box" class="product-img" />
+          <div class="product-name">Plastic Storage Box</div>
+          <div class="product-desc">Organize your home and office easily.</div>
+          <div class="product-price">₱180.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="info-sections" id="testimonials">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “Napaka-convenient! Halos lahat ng kailangan namin sa bahay, nandito na.” – Maria L., Talavera
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “Affordable prices and friendly staff. Lagi akong bumabalik.” – Jerome R., Nueva Ecija
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “Perfect for bulk buying! Suportado nila ang mga small sari-sari stores.” – Angela V., Talavera
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="info-sections" id="faq">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Do you offer delivery services?</div>
+        <div class="info-desc">Yes, we deliver within Talavera and nearby barangays.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Can I buy in bulk for reselling?</div>
+        <div class="info-desc">Absolutely. We support sari-sari stores and bulk buyers with special pricing.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Do you accept digital payments?</div>
+        <div class="info-desc">Yes, we accept GCash, bank transfers, and cash payments.</div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="info-sections" id="contact">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-map-pin-line"></i></div>
+        <div class="info-title">Address</div>
+        <div class="info-desc">
+          Purok 5, Bakal II, Talavera, Nueva Ecija, 3114, Philippines
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-mail-send-line"></i></div>
+        <div class="info-title">Email</div>
+        <div class="info-desc">
+          <a href="mailto:contact@daniracitadel.store">contact@daniracitadel.store</a>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-phone-line"></i></div>
+        <div class="info-title">Phone</div>
+        <div class="info-desc">
+          <a href="tel:+639622770132">+63 962 277 0132</a>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-time-line"></i></div>
+        <div class="info-title">Business Hours</div>
+        <div class="info-desc">
+          Monday – Saturday: 8:00 AM – 6:00 PM<br>Sunday: Closed
+        </div>
+      </div>
+    </section>
+
+    <!-- Policy Links Section -->
+    <section class="policy-sections" id="policies">
+      <div class="policy-card">
+        <div class="policy-title">Privacy Policy</div>
+        <div class="policy-body">
+          Your privacy is important to us. We respect your information and will never share it with third parties without consent.<br><br>
+          <em>This is a placeholder. The detailed privacy policy will be available soon.</em>
+          <br><a href="privacy-policy.html">View Privacy Policy</a>
+        </div>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">Terms of Service</div>
+        <div class="policy-body">
+          By shopping at Danira Noble Citadel, you agree to our terms, including compliance with laws and respect for all community members.<br><br>
+          <em>This is a placeholder. Full terms to be published soon.</em>
+          <br><a href="terms.html">View Terms of Service</a>
+        </div>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">Refund Policy</div>
+        <div class="policy-body">
+          Not satisfied with your purchase? We offer returns and exchanges for eligible products within 7 days of delivery.<br><br>
+          <em>This is a placeholder. Full refund policy coming soon.</em>
+          <br><a href="refund-policy.html">View Refund Policy</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="image/LOGO.png" alt="Danira Noble Citadel Logo" />
+          Danira Noble Citadel
+        </div>
+        <div class="footer-desc">
+          Purok 5, Bakal II, Talavera, Nueva Ecija, 3114, Philippines<br>
+          Email: <a href="mailto:contact@daniracitadel.store" style="color:var(--accent);">contact@daniracitadel.store</a><br>
+          Phone: <a href="tel:+639622770132" style="color:var(--accent);">+63 962 277 0132</a><br>
+          VAT Reg. No.: 254-065-722-000
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
+        <div class="footer-links">
+          <a href="#about" class="footer-link">About Us</a>
+          <a href="#products" class="footer-link">Products</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Help</div>
+        <div class="footer-links">
+          <a href="#testimonials" class="footer-link">Testimonials</a>
+          <a href="#faq" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Legal</div>
+        <div class="footer-links">
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Danira Noble Citadel | VAT Reg. No.: 254-065-722-000<br>
+      All content &copy; 2025 Danira Noble Citadel. Proudly Filipino.
+    </div>
+  </footer>
+
+  <script>
+    // Navigation for mobile
+    const navToggle = document.getElementById('nav-toggle');
+    const navClose = document.getElementById('nav-close');
+    const navList = document.getElementById('nav-list');
+    navToggle && navToggle.addEventListener('click', () => {
+      navList.classList.add('open');
+    });
+    navClose && navClose.addEventListener('click', () => {
+      navList.classList.remove('open');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => navList.classList.remove('open'));
+    });
+
+    // Cart functionality
+    let cart = [];
+    const products = [
+      {
+        id: 1,
+        name: "Rice 5kg",
+        price: 350.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 2,
+        name: "Laundry Detergent 1L",
+        price: 89.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 3,
+        name: "Instant Noodles 5-Pack",
+        price: 52.50,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 4,
+        name: "Sardines (Can)",
+        price: 24.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 5,
+        name: "Bath Soap (Pack of 3)",
+        price: 63.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 6,
+        name: "Notebook (100 pages)",
+        price: 25.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 7,
+        name: "Cooking Oil 1L",
+        price: 98.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 8,
+        name: "Biscuits Assorted Pack",
+        price: 49.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 9,
+        name: "Face Mask (10pcs)",
+        price: 38.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 10,
+        name: "Shampoo 200ml",
+        price: 45.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 11,
+        name: "Ballpen (Box of 12)",
+        price: 68.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 12,
+        name: "Dishwashing Liquid 500ml",
+        price: 36.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 13,
+        name: "Powdered Juice (10 sachets)",
+        price: 57.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 14,
+        name: "T-Shirt (Assorted)",
+        price: 120.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 15,
+        name: "Plastic Storage Box",
+        price: 180.00,
+        img: "image/placeholder.png"
+      }
+    ];
+
+    const cartBtn = document.getElementById('cart-btn');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartCloseBtn = document.getElementById('cart-close-btn');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartItemsCount = document.getElementById('cart-items-count');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const cartBadge = document.getElementById('cart-badge');
+
+    function openCart() {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    cartBtn && cartBtn.addEventListener('click', openCart);
+    cartCloseBtn && cartCloseBtn.addEventListener('click', closeCart);
+    cartOverlay && cartOverlay.addEventListener('click', closeCart);
+
+    // Add to cart logic
+    document.querySelectorAll('.product-add').forEach((btn, idx) => {
+      btn.addEventListener('click', function() {
+        const card = btn.closest('.product-card');
+        const pid = parseInt(card.getAttribute('data-id'));
+        addToCart(pid);
+      });
+    });
+
+    function addToCart(productId) {
+      const prod = products.find(p => p.id === productId);
+      const itemIndex = cart.findIndex(i => i.id === productId);
+      if (itemIndex > -1) {
+        cart[itemIndex].qty += 1;
+      } else {
+        cart.push({
+          id: prod.id,
+          name: prod.name,
+          price: prod.price,
+          img: prod.img,
+          qty: 1
+        });
+      }
+      renderCart();
+    }
+
+    function increaseQty(productId) {
+      const item = cart.find(i => i.id === productId);
+      if (item) {
+        item.qty += 1;
+        renderCart();
+      }
+    }
+
+    function decreaseQty(productId) {
+      const item = cart.find(i => i.id === productId);
+      if (item && item.qty > 1) {
+        item.qty -= 1;
+        renderCart();
+      }
+    }
+
+    function removeItem(productId) {
+      cart = cart.filter(i => i.id !== productId);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div style="text-align:center;color:#aaa;font-size:1rem;">Your cart is empty.</div>';
+      } else {
+        cart.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-details">
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-price">₱${item.price}</div>
+              <div class="cart-item-qty">
+                <button class="cart-item-qty-btn" aria-label="Decrease quantity"><i class="ri-subtract-line"></i></button>
+                <span>${item.qty}</span>
+                <button class="cart-item-qty-btn" aria-label="Increase quantity"><i class="ri-add-line"></i></button>
+                <button class="cart-item-remove" aria-label="Remove item"><i class="ri-delete-bin-6-line"></i></button>
+              </div>
+            </div>
+          `;
+          div.querySelector('.cart-item-qty-btn[aria-label="Decrease quantity"]').addEventListener('click', function() {
+            decreaseQty(item.id);
+          });
+          div.querySelector('.cart-item-qty-btn[aria-label="Increase quantity"]').addEventListener('click', function() {
+            increaseQty(item.id);
+          });
+          div.querySelector('.cart-item-remove').addEventListener('click', function() {
+            removeItem(item.id);
+          });
+          cartItemsContainer.appendChild(div);
+        });
+      }
+      const totalQty = cart.reduce((total, i) => total + i.qty, 0);
+      cartItemsCount.textContent = totalQty;
+      cartTotal.textContent = '₱' + cart.reduce((total, i) => total + i.qty * i.price, 0).toFixed(2);
+      if (totalQty > 0) {
+        cartBadge.textContent = totalQty;
+        cartBadge.style.display = 'block';
+      } else {
+        cartBadge.style.display = 'none';
+      }
+    }
+    renderCart();
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    checkoutBtn && checkoutBtn.addEventListener('click', function() {
+      localStorage.setItem('checkoutCart', JSON.stringify(cart));
+      window.location.href = "order-summary.html";
+    });
+
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    window.addEventListener('scroll', function() {
+      if(window.scrollY > 400) {
+        scrollTopBtn.classList.add('show');
+      } else {
+        scrollTopBtn.classList.remove('show');
+      }
+    });
+    scrollTopBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
